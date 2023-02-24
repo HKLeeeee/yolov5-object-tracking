@@ -1,30 +1,24 @@
-# YOLOv7 Object Tracking
+# YOLOv5 Object Tracking
 
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
-Multiple object tracking with YOLOv7 and SORT. 
+Multiple object tracking with YOLOv5 and SORT. 
 
-This repository is created for the channel [TheCodingBug](https://www.youtube.com/channel/UCcNgapXcZkyW10FIOohZ1uA).
-You can find the complete tutorial [Here](https://www.youtube.com/channel/UCcNgapXcZkyW10FIOohZ1uA).
+This repository is created from https://github.com/haroonshakeel/yolov7-object-tracking
 
-# Object Tracking Results ``YOLOv7`` Weights
+# Object Tracking Results ``YOLOv5`` Weights
 
-<p align="center"><img src="test.gif" width="640"\></p>
+<!-- <p align="center"><img src="test.gif" width="640"\></p> -->
 
 # TO DO
-* [x] Add flag to enable tracking
-* [x] Add flag to hide bbox
-* [x] Add flag to hide label
-* [x] Add flag to change random seed to assign different color to each class
-* [x] Add flag to change size of bbox/label
-* [x] Add flag to show fps
-* [x] Add flag to draw track
-* [x] Track color is the same as the bbox color
-* [x] Add flag to enable different color for each track
+* [] Refactor Inference Code(detect_or_track.py) from yolov7 to yolov5
+* [] Write Read Me how to use this repo
+
 
 # Credits  
-  * [WongKinYiu Yolov7 Repo](https://github.com/WongKinYiu/yolov7)
+  * [ultralytics Yolov5 Repo](https://github.com/ultralytics/yolov5)
+  * [haroonshakell yolov7-object-tracking Repo](https://github.com/haroonshakeel/yolov7-object-tracking)
   * [RizwanMunawar Yolov7 Object Tracking Repo](https://github.com/RizwanMunawar/yolov7-object-tracking)
   * [abewley SORT Repo](https://github.com/abewley/sort)
   * [TheAIGuy DeepSort Repo](https://github.com/theAIGuysCode/yolov4-deepsort)
