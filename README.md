@@ -3,13 +3,14 @@
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
-Multiple object tracking with YOLOv5 and SORT. 
+Multiple object tracking with YOLOv5 and SORT.   
+With this repo, now you can do MOT tasks not only use *.pt model but also *.onnx, *.engine, *.torchscript etc. which yolov5 support!
 
 This repository is created from https://github.com/haroonshakeel/yolov7-object-tracking
 
 # Object Tracking Results ``YOLOv5`` Weights
 
-<!-- <p align="center"><img src="test.gif" width="640"\></p> -->
+<p align="center"><img src="test.gif" width="640"\></p>
 
 # TO DO
 * [] Refactor Inference Code(detect_or_track.py) from yolov7 to yolov5
