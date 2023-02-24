@@ -13,6 +13,7 @@ This repository is created from https://github.com/haroonshakeel/yolov7-object-t
 
 # TO DO
 * [] Refactor Inference Code(detect_or_track.py) from yolov7 to yolov5
+* [] Add show fps
 * [] Write Read Me how to use this repo
 
 
