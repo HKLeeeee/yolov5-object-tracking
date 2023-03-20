@@ -46,7 +46,7 @@ from utils.dataloaders import IMG_FORMATS, VID_FORMATS, LoadImages, LoadScreensh
 from utils.general import (LOGGER, Profile, check_file, check_img_size, check_imshow, check_requirements, colorstr, cv2,
                            increment_path, non_max_suppression, print_args, scale_boxes, strip_optimizer, xyxy2xywh, scale_coords)
 from utils.plots import Annotator, colors, save_one_box
-from utils.torch_utils import select_device, smart_inference_mode
+from utils.torch_utils import select_device, smart_inference_mode, time_sync
 
 import time
 import numpy as np
@@ -115,6 +115,7 @@ def run(
         track=False,
         show_track=False,
         thickness=2,
+        show_fps=False
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -155,6 +156,8 @@ def run(
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
 
+    t0 = time.time()
+    startTime = 0
     for path, im, im0s, vid_cap, s in dataset:
         with dt[0]:
             im = torch.from_numpy(im).to(model.device)
@@ -163,18 +166,18 @@ def run(
             if len(im.shape) == 3:
                 im = im[None]  # expand for batch dim
 
-        # Inference
+                # Inference
+        t1 = time_sync()
         with dt[1]:
             visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
             pred = model(im, augment=augment, visualize=visualize)
-
+        t2 = time_sync()
         # NMS
         with dt[2]:
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
-
+        t3 = time_sync()
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
-
 
         # Process predictions
         for i, det in enumerate(pred):  # per image
@@ -256,6 +259,13 @@ def run(
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
             # Stream results
+            if dataset.mode != 'image' and opt.show_fps:
+                currentTime = time.time()
+
+                fps = 1/(currentTime - startTime)
+                startTime = currentTime
+                cv2.putText(im0, "FPS: " + str(int(fps)), (20, 70), cv2.FONT_HERSHEY_PLAIN, 2, (0,255,0),2)
+            
             # im0 = annotator.result()
             if view_img:
                 if platform.system() == 'Linux' and p not in windows:
@@ -330,7 +340,7 @@ def parse_opt():
     parser.add_argument('--thickness', type=int, default=2, help='bounding box and font size thickness')
     parser.add_argument('--track', action='store_true', help='run tracking')
     parser.add_argument('--show-track', action='store_true', help='show tracked path')
-    # parser.add_argument('--show-fps', action='store_true', help='show fps')
+    parser.add_argument('--show-fps', action='store_true', help='show fps')
     
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
